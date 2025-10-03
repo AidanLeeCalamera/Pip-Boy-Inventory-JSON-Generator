@@ -223,6 +223,7 @@
         if (typeof consumablePresets !== 'undefined') allPresets.push(...consumablePresets);
         if (typeof weaponPresets !== 'undefined') allPresets.push(...weaponPresets);
         if (typeof apparelPresets !== 'undefined') allPresets.push(...apparelPresets);
+
         const combined = {};
         allPresets.forEach(item => {
             const key = item.name.toLowerCase().replace(/\s+/g, '');
@@ -274,13 +275,8 @@
             </div>
             <button class="delete-btn" onclick="deleteItem(${index}, event)">×</button>
         `;
-
-        // Attach click listener to the entire LI
         li.onclick = (event) => {
-            // But ignore clicks that came from buttons or the arrow container
-            if (event.target.closest('button, .reorder-arrows')) {
-                return;
-            }
+            if (event.target.closest('button, .reorder-arrows')) return;
             selectItem(index);
         };
         list.appendChild(li);
@@ -541,11 +537,13 @@
       const a = document.createElement('a'); a.href = url; a.download = 'items.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
     
-    // Initial setup calls
-    initializePresets();
-    renderPresetDropdown();
-    renderItemList();
-    renderPipboyPreview();
+    // Initial setup calls run after the DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        initializePresets();
+        renderPresetDropdown();
+        renderItemList();
+        renderPipboyPreview();
+    });
   </script>
 </body>
 </html>
