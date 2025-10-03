@@ -2,7 +2,7 @@ const consumablePresets = [
   {
     "name": "Stimpak",
     "type": "consumable",
-    "quantity": 10,
+    "quantity": 1,
     "effect": "Restores 30% of your health.",
     "sounds": [
       "Stimpak.wav"
@@ -17,7 +17,7 @@ const consumablePresets = [
   {
     "name": "RadAway",
     "type": "consumable",
-    "quantity": 5,
+    "quantity": 1,
     "effect": "Removes 300 points of radiation over time.",
     "sounds": [
       "Radaway.wav"
@@ -35,7 +35,7 @@ const consumablePresets = [
   {
     "name": "Rad-X",
     "type": "consumable",
-    "quantity": 8,
+    "quantity": 1,
     "effect": "Increases radiation resistance by 75 for 3 minutes.",
     "sounds": [
       "RadX_01.wav",
@@ -44,7 +44,7 @@ const consumablePresets = [
     "image": "RadX_img.js",
     "stats": {
       "Rad Resist": {
-        "value": "+75",
+        "value": "75",
         "isTimed": true
       },
       "Weight": "0.1",
@@ -54,7 +54,7 @@ const consumablePresets = [
   {
     "name": "Nuka-Cola",
     "type": "consumable",
-    "quantity": 12,
+    "quantity": 1,
     "effect": "Refreshing! Restores 20 HP and provides a small AP boost.",
     "sounds": [
       "NukaCola.wav"
@@ -62,10 +62,11 @@ const consumablePresets = [
     "image": "NukaCola_img.js",
     "stats": {
       "Health": "20",
-      "AP": "+10",
-      "Rads": "+5",
+      "AP": "10",
+      "Rads": "5",
       "Weight": "1.0",
       "Value": "20"
     }
   }
+
 ];
