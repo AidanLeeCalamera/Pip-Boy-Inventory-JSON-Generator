@@ -18,8 +18,9 @@ A HTML page for generating items.json files for my inventory patch for the Pip-B
 <br/>
 
 # Any PRs with custom items, whether from the games or just fun items you've made, are encouraged and welcome!
-Simply create your custom item in the app, export the json file, and copy the item into the corresponding preset js file. (If you have any custom sounds or images, you should PR those too into DATA)
-If you wanted to make a Nuka-Cola item, you would set all the stats in the app, any sound(s) you want, any images, etc. Export as a json, in this case it would look like:
+Simply create your custom item in the app, export the json file, and copy the item in the curly brackets into the corresponding preset js file. (If you have any custom sounds or images, you should PR those too into DATA)<br/>
+
+For example, if you wanted to make a Nuka-Cola item, you would set all the stats names and values in the app, any sound(s) you want, any images<sup>**1**</sup>, etc. And export as a json, in this case it would look like:
 ```
 [
   {
@@ -39,4 +40,4 @@ If you wanted to make a Nuka-Cola item, you would set all the stats in the app, 
   }
 ]
 ```
-Copy from the { before the name, to the second } after your last stat. Paste into the corresponding preset category, in this case consumables, and PR.
+Then copy from the { before "name", to the second } after your last stat. Paste into the corresponding preset category, in this case consumables, and PR.
