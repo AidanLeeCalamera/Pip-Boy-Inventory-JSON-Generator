@@ -2,15 +2,40 @@
 A HTML page for generating items.json files for my inventory patch for the Pip-Boy 3000 MK V.
 
 ## Usage
-1. Download zip and extract to a folder.\
+1. Download zip and extract to a folder.
 2. Run items-json-generator.html\
-   Optional: If you have custom audio or images you want to add, select the DATA folder included.\
+   Optional: If you want to use any of the audio and/or image files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any audio and/or image files just put them in that folder. (Tutorial for how to do images will come soon, as for audio, it's as simple as running
+   `mkdir output && for %F in (*.mp3) do ffmpeg -i "%F" -ac 1 -ar 16000 -af "volume=5dB" -sample_fmt s16 -c:a pcm_s16le -f wav "output\%~nF.wav"`
+   in the directory with the audio you want to add, and putting the output files in the DATA folder.
 5. Select presets to add predefined items or add custom items with "Add New Item".\
-   Optional: If making a custom item, select item type.
-6. All stats are fully customizable by name, so you can name any stat whatever you want. Weapons have 6 damage types available.
+   Optional: If making a custom item, select item type, this is very important.
+6. All stats are fully customizable, so you can name an item anything you want, name any stat whatever you want, have any value you want. Weapons have 6 damage types available.
 7. Export the items.json by clicking "Export items.json", which can then be uploaded to the Pip-Boy 3000 MK V for use with the Pip-Boy inventory patch (coming soon) with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).
 8. Stock up on Stimpaks and Radaway for the wasteland!
 
 
+
+
 # Any PRs with custom items, whether from the games or just fun items you've made, are encouraged and welcome!
-Simply modify the presets_x.js file relating to your item and add your custom item.
+Simply create your custom item in the app, export the json file, and copy the item into the corresponding preset js file. (If you have any custom sounds or images, you should PR those too into DATA)
+If you wanted to make a Nuka-Cola item, you would set all the stats in the app, any sound(s) you want, any images, etc. Export as a json, in this case it would look like:
+```
+[
+  {
+    "name": "Stimpak",
+    "type": "consumable",
+    "quantity": 10,
+    "effect": "Restores 30% of your health.",
+    "sounds": [
+      "Stimpak.wav"
+    ],
+    "image": "Stimpak_img.js",
+    "stats": {
+      "Health": "30%",
+      "Weight": "0.1",
+      "Value": "48"
+    }
+  }
+]
+```
+Copy from the { before the name, to the second } after your last stat. Paste into the corresponding preset category, in this case consumables, and PR.
