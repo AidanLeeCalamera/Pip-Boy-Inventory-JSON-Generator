@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Items.json Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <script src="presets_consumables.js"></script>
+  <script src="presets_weapons.js"></script>
+  <script src="presets_apparel.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #3a3a3a;
+      min-height: 100vh;
+      padding: 15px;
+      color: #e0e0e0;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: #2b2b2b;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+    .header {
+      background: #1f1f1f;
+      color: #e0e0e0;
+      padding: 15px 30px;
+      text-align: center;
+      border-bottom: 3px solid #555;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header h1 { font-size: 1.5em; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); margin: 0; }
+    .export-btn-header {
+      background: #666;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 6px;
+      font-size: 1em;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .export-btn-header:hover { background: #777; }
+    .main-content {
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      gap: 0;
+      height: calc(100vh - 120px);
+    }
+    .sidebar {
+      background: #353535;
+      border-right: 2px solid #555;
+      padding: 15px;
+      overflow-y: auto;
+      height: 100%;
+    }
+    .item-list { list-style: none; }
+    .item-list li {
+      background: #2b2b2b;
+      margin-bottom: 6px;
+      padding: 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #e0e0e0;
+    }
+    .item-list li:hover { border-color: #666; background: #3a3a3a; }
+    .item-list li.active { background: #555; color: white; border-color: #777; }
+    .item-name-wrapper {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+    .item-name { font-weight: 600; }
+    .item-type {
+      font-size: 0.75em;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: #4a4a4a;
+      margin-left: 8px;
+    }
+    .item-list li.active .item-type { background: rgba(255,255,255,0.3); }
+    .delete-btn {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 8px;
+      font-size: 0.85em;
+    }
+    .delete-btn:hover { background: #da190b; }
+    .add-item-btn {
+      width: 100%;
+      padding: 10px;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.95em;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: background 0.3s;
+    }
+    .add-item-btn:hover { background: #666; }
+    .preset-dropdown {
+      width: 100%;
+      padding: 8px;
+      background: #3a3a3a;
+      color: #e0e0e0;
+      border: 2px solid #555;
+      border-radius: 6px;
+      font-size: 0.9em;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .preset-dropdown:hover { border-color: #777; }
+    .editor {
+      padding: 20px;
+      overflow-y: auto;
+      height: 100%;
+      border-right: 2px solid #555;
+    }
+    .form-group { margin-bottom: 12px; }
+    .form-row { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; margin-bottom: 12px; }
+    label { display: block; font-weight: 600; margin-bottom: 4px; color: #c0c0c0; font-size: 0.85em; }
+    input[type="text"], input[type="number"], textarea, select {
+      width: 100%;
+      padding: 7px;
+      border: 2px solid #555;
+      border-radius: 6px;
+      font-size: 0.9em;
+      transition: border-color 0.3s;
+      background: #3a3a3a;
+      color: #e0e0e0;
+    }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #777; }
+    textarea { resize: vertical; min-height: 50px; font-family: inherit; }
+    .stats-container, .damages-container, .defenses-container {
+      background: #353535;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 6px;
+    }
+    .stat-item { display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 6px; margin-bottom: 6px; align-items: end; }
+    .stat-item.consumable-stat { grid-template-columns: 1fr 1fr auto auto auto; }
+    .damage-item, .defense-item { display: grid; grid-template-columns: 1fr 1fr auto; gap: 6px; margin-bottom: 6px; align-items: end; }
+    .remove-stat-btn { background: #f44336; color: white; border: none; padding: 7px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8em; }
+    .add-stat-btn { background: #555; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; margin-top: 6px; font-size: 0.8em; }
+    .add-stat-btn:hover { background: #666; }
+    .checkbox-group { display: flex; align-items: center; margin-top: 10px; }
+    .checkbox-group input[type="checkbox"] { width: auto; margin-right: 8px; }
+    .sound-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .sound-tag { background: #555; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.8em; display: flex; align-items: center; gap: 5px; }
+    .sound-tag button { background: rgba(255,255,255,0.3); border: none; color: white; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-weight: bold; font-size: 0.8em; }
+    .empty-state { text-align: center; padding: 60px 20px; color: #888; }
+    .empty-state h2 { margin-bottom: 15px; }
+    .section-header { font-size: 1.1em; color: #e0e0e0; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #555; }
+    .pipboy-preview-container { background: #000; color: #14ff72; padding: 15px; font-family: 'VT323', monospace; font-size: 20px; height: 100%; overflow-y: auto; }
+    .preview-header { display: flex; justify-content: space-between; border-bottom: 2px solid #14ff72; padding-bottom: 5px; margin-bottom: 5px; }
+    .preview-stats-list .stat-row { display: flex; justify-content: space-between; align-items: center; padding: 2px 4px; margin-bottom: 2px; height: 24px; }
+    .preview-stats-list .stat-row .stat-name, .preview-stats-list .stat-row .stat-value { display: flex; align-items: center; gap: 6px; }
+    .preview-stats-list .bright-bg { background-color: #0d3a1f; }
+    .preview-stats-list .dithered-bg { background-image: repeating-linear-gradient(#000 0, #000 1px, #0a2815 1px, #0a2815 2px); }
+    .reorder-arrows { display: flex; flex-direction: column; gap: 2px; }
+    .reorder-arrows button { background: #555; color: white; border: none; border-radius: 4px; width: 20px; height: 15px; line-height: 15px; cursor: pointer; font-size: 10px; }
+    .reorder-arrows button:hover { background: #666; }
+    .reorder-arrows button:disabled { background: #444; color: #888; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Items.json Generator</h1>
+      <button class="export-btn-header" onclick="exportJSON()">Export items.json</button>
+    </div>
+
+    <div class="main-content">
+      <div class="sidebar">
+        <button class="add-item-btn" onclick="document.getElementById('folderInput').click()">Select DATA Folder</button>
+        <input type="file" id="folderInput" webkitdirectory directory style="display: none;" onchange="loadDataFolder(event)">
+        <button class="add-item-btn" onclick="addNewItem()">+ Add New Item</button>
+        <select class="preset-dropdown" id="presetDropdown" onchange="addPresetItem(this.value); this.value='';"></select>
+        <ul class="item-list" id="itemList"></ul>
+      </div>
+
+      <div class="editor" id="editor"><div class="empty-state"><h2>No item selected</h2><p>Select an item from the list or create a new one</p></div></div>
+      
+      <div class="pipboy-preview-container" id="pipboy-preview">
+          <div class="preview-header"><span id="preview-name">ITEM NAME</span><span>QTY <span id="preview-qty">0</span></span></div>
+          <div class="preview-stats-list" id="preview-stats-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let items = [];
+    let currentIndex = -1;
+    let availableSounds = [];
+    let availableImages = [];
+    let presetItems = {}; 
+
+    const damageTypes = ["attack", "energy", "fire", "frost", "bleed", "rad"];
+    const defenseTypes = ["defense", "energy", "fire", "frost", "rad"];
+    
+    function initializePresets() {
+        const allPresets = [];
+        if (typeof consumablePresets !== 'undefined') allPresets.push(...consumablePresets);
+        if (typeof weaponPresets !== 'undefined') allPresets.push(...weaponPresets);
+        if (typeof apparelPresets !== 'undefined') allPresets.push(...apparelPresets);
+        const combined = {};
+        allPresets.forEach(item => {
+            const key = item.name.toLowerCase().replace(/\s+/g, '');
+            combined[key] = item;
+        });
+        presetItems = combined;
+    }
+
+    function renderPresetDropdown() {
+        const dropdown = document.getElementById('presetDropdown');
+        let optionsHtml = `<option value="">Add Preset Item...</option>`;
+        for (const key in presetItems) {
+            optionsHtml += `<option value="${key}">${presetItems[key].name}</option>`;
+        }
+        dropdown.innerHTML = optionsHtml;
+    }
+
+    function loadDataFolder(event) {
+      const files = event.target.files;
+      if (files.length === 0) return;
+      const soundFiles = [], imageFiles = [];
+      for (const file of files) {
+        const fileName = file.name;
+        if ( fileName.toLowerCase().endsWith('.wav') && !fileName.includes('EquipUp') && !fileName.includes('EquipDown') ) { soundFiles.push(fileName); }
+        if (fileName.toLowerCase().endsWith('.js')) { imageFiles.push(fileName); }
+      }
+      availableSounds = soundFiles.sort();
+      availableImages = imageFiles.sort();
+      if (currentIndex > -1) { renderEditor(); }
+    }
+
+    function renderItemList() {
+      const list = document.getElementById('itemList');
+      list.innerHTML = '';
+      items.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.className = index === currentIndex ? 'active' : '';
+        const isFirst = index === 0;
+        const isLast = index === items.length - 1;
+
+        li.innerHTML = `
+            <div class="item-name-wrapper">
+                <span class="item-name">${item.name}</span>
+            </div>
+            ${item.type ? `<span class="item-type">${item.type}</span>` : ''}
+            <div class="reorder-arrows">
+                <button onclick="moveItemUp(${index}, event)" ${isFirst ? 'disabled' : ''}>▲</button>
+                <button onclick="moveItemDown(${index}, event)" ${isLast ? 'disabled' : ''}>▼</button>
+            </div>
+            <button class="delete-btn" onclick="deleteItem(${index}, event)">×</button>
+        `;
+
+        // Attach click listener to the entire LI
+        li.onclick = (event) => {
+            // But ignore clicks that came from buttons or the arrow container
+            if (event.target.closest('button, .reorder-arrows')) {
+                return;
+            }
+            selectItem(index);
+        };
+        list.appendChild(li);
+      });
+    }
+
+    function renderPipboyPreview() {
+        const item = items[currentIndex];
+        const previewName = document.getElementById('preview-name');
+        const previewQty = document.getElementById('preview-qty');
+        const statsList = document.getElementById('preview-stats-list');
+        if (!item) {
+            previewName.textContent = 'ITEM NAME';
+            previewQty.textContent = '0';
+            statsList.innerHTML = '';
+            return;
+        }
+        previewName.textContent = item.name.toUpperCase();
+        previewQty.textContent = item.quantity;
+        statsList.innerHTML = '';
+        const createStatValueRow = (label, value) => {
+             const row = document.createElement('div');
+             row.className = 'stat-row';
+             row.innerHTML = `<span class="stat-name">${label.toUpperCase()}</span><span class="stat-value bright-bg" style="padding: 0 4px;">${value}</span>`;
+             statsList.appendChild(row);
+        };
+        if (item.damages && item.damages.length > 0) { item.damages.forEach(d => createStatValueRow(d.type, d.value)); }
+        if (item.defenses && item.defenses.length > 0) { item.defenses.forEach(d => createStatValueRow(d.type, d.value)); }
+        if (item.stats) {
+            for (const statName in item.stats) {
+                const row = document.createElement('div');
+                const statData = item.stats[statName];
+                const isObject = typeof statData === 'object' && statData !== null;
+                const value = isObject ? statData.value : statData;
+                const isTimed = isObject && statData.isTimed;
+                let backgroundClass = (statName === item.ammoType) ? 'bright-bg' : 'dithered-bg';
+                row.className = `stat-row ${backgroundClass}`;
+                const timeIndicator = isTimed ? '(T) ' : '';
+                row.innerHTML = `<span class="stat-name">${statName.toUpperCase()}</span><span class="stat-value">${timeIndicator}${value}</span>`;
+                statsList.appendChild(row);
+            }
+        }
+    }
+
+    function selectItem(index) {
+      currentIndex = index;
+      renderItemList();
+      renderEditor();
+      renderPipboyPreview();
+    }
+    
+    function updateItem(field, value) {
+      if (currentIndex < 0) return;
+      items[currentIndex][field] = value;
+      if (field === 'name' || field === 'quantity' || field === 'type') { renderItemList(); }
+      renderPipboyPreview();
+    }
+
+    function moveItem(fromIndex, toIndex) {
+        if (fromIndex < 0 || fromIndex >= items.length || toIndex < 0 || toIndex >= items.length) return;
+        const [item] = items.splice(fromIndex, 1);
+        items.splice(toIndex, 0, item);
+        selectItem(toIndex);
+    }
+    function moveItemUp(index, event) { event.stopPropagation(); moveItem(index, index - 1); }
+    function moveItemDown(index, event) { event.stopPropagation(); moveItem(index, index + 1); }
+    
+    function moveStat(key, direction) {
+        if (currentIndex < 0) return;
+        const stats = items[currentIndex].stats;
+        const statsArray = Object.entries(stats);
+        const fromIndex = statsArray.findIndex(pair => pair[0] === key);
+        const toIndex = fromIndex + direction;
+        if (fromIndex < 0 || toIndex < 0 || toIndex >= statsArray.length) return;
+        const [movedItem] = statsArray.splice(fromIndex, 1);
+        statsArray.splice(toIndex, 0, movedItem);
+        items[currentIndex].stats = Object.fromEntries(statsArray);
+        renderStats();
+        renderPipboyPreview();
+    }
+    function moveStatUp(key) { moveStat(key, -1); }
+    function moveStatDown(key) { moveStat(key, 1); }
+
+    function addDamage() { if(currentIndex<0)return; if (!items[currentIndex].damages) { items[currentIndex].damages = []; } items[currentIndex].damages.push({ type: "attack", value: "10" }); renderDamages(); renderPipboyPreview(); }
+    function removeDamage(index) { if(currentIndex<0)return; items[currentIndex].damages.splice(index, 1); if (items[currentIndex].damages.length === 0) { delete items[currentIndex].damages; } renderDamages(); renderPipboyPreview(); }
+    function addDefense() { if(currentIndex<0)return; if (!items[currentIndex].defenses) { items[currentIndex].defenses = []; } items[currentIndex].defenses.push({ type: "defense", value: "10" }); renderDefenses(); renderPipboyPreview(); }
+    function removeDefense(index) { if(currentIndex<0)return; items[currentIndex].defenses.splice(index, 1); if (items[currentIndex].defenses.length === 0) { delete items[currentIndex].defenses; } renderDefenses(); renderPipboyPreview(); }
+    function addStat() { if(currentIndex<0)return; if (!items[currentIndex].stats) { items[currentIndex].stats = {}; } let newKey="NewStat", counter=1; while(items[currentIndex].stats[newKey]){newKey=`NewStat${counter++}`;} items[currentIndex].stats[newKey] = "0"; renderStats(); renderPipboyPreview(); }
+    function removeStat(key) { if(currentIndex<0)return; delete items[currentIndex].stats[key]; renderStats(); renderPipboyPreview(); }
+    function updateStatKey(oldKey, newKey) {
+        if(currentIndex<0||oldKey===newKey)return;
+        const statsArray = Object.entries(items[currentIndex].stats);
+        const index = statsArray.findIndex(pair => pair[0] === oldKey);
+        if (index > -1) {
+            statsArray[index][0] = newKey;
+            items[currentIndex].stats = Object.fromEntries(statsArray);
+        }
+        renderStats();
+        renderPipboyPreview();
+    }
+    function updateStatValue(key, value) { 
+        if(currentIndex<0) return; 
+        const stat = items[currentIndex].stats[key];
+        if (typeof stat === 'object' && stat !== null) { stat.value = value; }
+        else { items[currentIndex].stats[key] = value; }
+        renderPipboyPreview(); 
+    }
+    function toggleStatIsTimed(key, isChecked) {
+        if (currentIndex < 0) return;
+        const currentStat = items[currentIndex].stats[key];
+        if (isChecked) {
+            const value = (typeof currentStat === 'object' && currentStat !== null) ? currentStat.value : currentStat;
+            items[currentIndex].stats[key] = { value: value || "0", isTimed: true };
+        } else {
+            const value = (typeof currentStat === 'object' && currentStat !== null) ? currentStat.value : currentStat;
+            items[currentIndex].stats[key] = value;
+        }
+        renderStats();
+        renderPipboyPreview();
+    }
+    function updateDamage(index, field, value) { if(currentIndex<0)return; items[currentIndex].damages[index][field] = value; renderPipboyPreview(); }
+    function updateDefense(index, field, value) { if(currentIndex<0)return; items[currentIndex].defenses[index][field] = value; renderPipboyPreview(); }
+
+    function addNewItem() {
+      const newItem = { name: "New Item", quantity: 1, effect: "", stats: {} };
+      items.push(newItem);
+      selectItem(items.length - 1);
+    }
+
+    function addPresetItem(presetKey) {
+      if (!presetKey) return;
+      const preset = presetItems[presetKey];
+      if (preset) {
+        const newItem = JSON.parse(JSON.stringify(preset));
+        items.push(newItem);
+        selectItem(items.length - 1);
+      }
+    }
+
+    function deleteItem(index, event) {
+      event.stopPropagation();
+      items.splice(index, 1);
+      if (currentIndex >= items.length) { currentIndex = items.length - 1; }
+      if (currentIndex === index) { currentIndex = index - 1; }
+      renderItemList();
+      if (items.length > 0) {
+        selectItem(Math.max(0, currentIndex));
+      } else {
+        currentIndex = -1;
+        document.getElementById('editor').innerHTML = `<div class="empty-state"><h2>No item selected</h2><p>Select an item from the list or create a new one</p></div>`;
+        renderPipboyPreview();
+      }
+    }
+    
+    function addSound(sound) {
+      if (!sound || currentIndex < 0) return;
+      if (!items[currentIndex].sounds) items[currentIndex].sounds = [];
+      if (!items[currentIndex].sounds.includes(sound)) { items[currentIndex].sounds.push(sound); renderSounds(); }
+    }
+    function removeSound(index) {
+      if (currentIndex < 0) return;
+      items[currentIndex].sounds.splice(index, 1);
+      if (items[currentIndex].sounds.length === 0) delete items[currentIndex].sounds;
+      renderSounds();
+    }
+    
+    function renderEditor() {
+      if (currentIndex < 0) {
+        document.getElementById('editor').innerHTML = `<div class="empty-state"><h2>No item selected</h2><p>Select an item from the list or create a new one</p></div>`;
+        return;
+      }
+      const item = items[currentIndex];
+      let html = `<div class="section-header">Edit Item</div>`;
+      html += `
+        <div class="form-row">
+          <div class="form-group"> <label>Type</label> <select onchange="updateItem('type', this.value); renderEditor();"> <option value="">None</option> <option value="weapon" ${item.type === 'weapon' ? 'selected' : ''}>Weapon</option> <option value="apparel" ${item.type === 'apparel' ? 'selected' : ''}>Apparel</option> <option value="consumable" ${item.type === 'consumable' ? 'selected' : ''}>Consumable</option> </select> </div>
+          <div class="form-group"> <label>Name</label> <input type="text" value="${item.name}" oninput="updateItem('name', this.value)"> </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"> <label>Quantity</label> <input type="number" value="${item.quantity}" oninput="updateItem('quantity', parseInt(this.value) || 0)"> </div>
+          <div class="form-group"> <label>Sounds</label> <select onchange="addSound(this.value); this.value='';"> <option value="">Select a sound file...</option> ${availableSounds.map(s => `<option value="${s}">${s}</option>`).join('')} </select> <div class="sound-list" id="soundList"></div> </div>
+        </div>
+        <div class="form-group"> <label>Image File</label> <select onchange="updateItem('image', this.value)"> <option value="">None</option> ${availableImages.map(img => `<option value="${img}" ${item.image === img ? 'selected' : ''}>${img}</option>`).join('')} </select> </div>
+      `;
+
+      if (item.type === 'weapon') { html += `<div class="form-group"> <label>Ammo Type</label> <input type="text" value="${item.ammoType || ''}" oninput="updateItem('ammoType', this.value || null)" placeholder="e.g., Fusion Cell"> </div> <div class="form-group"> <label>Damage Values</label> <div class="damages-container" id="damagesContainer"></div> <button class="add-stat-btn" onclick="addDamage()">+ Add Damage Type</button> </div>`; }
+      if (item.type === 'apparel') { html += `<div class="form-group"> <label>Defense Values</label> <div class="defenses-container" id="defensesContainer"></div> <button class="add-stat-btn" onclick="addDefense()">+ Add Defense Type</button> </div>`; }
+      
+      html += `
+        <div class="form-group" style="margin-top: 15px;"> <label>Stats</label> <div class="stats-container" id="statsContainer"></div> <button class="add-stat-btn" onclick="addStat()">+ Add Stat</button> </div>
+        <div class="form-group"> <label>Effect Description</label> <textarea oninput="updateItem('effect', this.value)">${item.effect || ''}</textarea> </div>`;
+
+      document.getElementById('editor').innerHTML = html;
+      renderDamages(); renderDefenses(); renderSounds(); renderStats();
+    }
+    
+    function renderDamages() {
+      if (currentIndex < 0 || !items[currentIndex].damages) { const c = document.getElementById('damagesContainer'); if(c) c.innerHTML = ''; return; }
+      const item = items[currentIndex]; const container = document.getElementById('damagesContainer'); container.innerHTML = '';
+      item.damages.forEach((damage, index) => {
+        const div = document.createElement('div'); div.className = 'damage-item';
+        div.innerHTML = `<div><label>Type</label><select onchange="updateDamage(${index},'type',this.value)">${damageTypes.map(t=>`<option value="${t}" ${damage.type===t?'selected':''}>${t}</option>`).join('')}</select></div><div><label>Value</label><input type="text" value="${damage.value}" oninput="updateDamage(${index},'value',this.value)"></div><button class="remove-stat-btn" onclick="removeDamage(${index})">Remove</button>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderDefenses() {
+      if (currentIndex < 0 || !items[currentIndex].defenses) { const c = document.getElementById('defensesContainer'); if(c) c.innerHTML = ''; return; }
+      const item = items[currentIndex]; const container = document.getElementById('defensesContainer'); container.innerHTML = '';
+      item.defenses.forEach((defense, index) => {
+        const div = document.createElement('div'); div.className = 'defense-item';
+        div.innerHTML = `<div><label>Type</label><select onchange="updateDefense(${index},'type',this.value)">${defenseTypes.map(t=>`<option value="${t}" ${defense.type===t?'selected':''}>${t}</option>`).join('')}</select></div><div><label>Value</label><input type="text" value="${defense.value}" oninput="updateDefense(${index},'value',this.value)"></div><button class="remove-stat-btn" onclick="removeDefense(${index})">Remove</button>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderSounds() {
+      const container = document.getElementById('soundList'); if (!container) return; container.innerHTML = ''; if (currentIndex < 0 || !items[currentIndex].sounds) return;
+      items[currentIndex].sounds.forEach((sound, index) => { const tag = document.createElement('div'); tag.className = 'sound-tag'; tag.innerHTML = `${sound} <button onclick="removeSound(${index})">×</button>`; container.appendChild(tag); });
+    }
+
+    function renderStats() {
+       const container = document.getElementById('statsContainer'); if (!container) return; container.innerHTML = ''; if (currentIndex < 0 || !items[currentIndex].stats) return;
+       const item = items[currentIndex];
+       const statsArray = Object.entries(item.stats);
+       statsArray.forEach(([key, statData], index) => {
+         const isObject = typeof statData === 'object' && statData !== null;
+         const value = isObject ? statData.value : statData;
+         const isTimed = isObject && statData.isTimed;
+         const isFirst = index === 0;
+         const isLast = index === statsArray.length - 1;
+         
+         const div = document.createElement('div');
+         
+         let timedCheckbox = '';
+         if (item.type === 'consumable') {
+             div.className = 'stat-item consumable-stat';
+             timedCheckbox = `<div class="checkbox-group"><input type="checkbox" ${isTimed ? 'checked' : ''} onchange="toggleStatIsTimed('${key}', this.checked)"><label>Timed</label></div>`;
+         } else {
+             div.className = 'stat-item';
+         }
+
+         div.innerHTML = `
+           <div><label>Stat Name</label><input type="text" value="${key}" onchange="updateStatKey('${key}', this.value)"></div>
+           <div><label>Value</label><input type="text" value="${value}" oninput="updateStatValue('${key}', this.value)"></div>
+           ${timedCheckbox}
+           <div class="reorder-arrows">
+               <button onclick="moveStatUp('${key}')" ${isFirst ? 'disabled' : ''}>▲</button>
+               <button onclick="moveStatDown('${key}')" ${isLast ? 'disabled' : ''}>▼</button>
+           </div>
+           <button class="remove-stat-btn" onclick="removeStat('${key}')">Remove</button>`;
+         container.appendChild(div);
+       });
+    }
+    
+    function exportJSON() {
+      const json = JSON.stringify(items, null, 2); const blob = new Blob([json],{type:'application/json'}); const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = 'items.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    }
+    
+    // Initial setup calls
+    initializePresets();
+    renderPresetDropdown();
+    renderItemList();
+    renderPipboyPreview();
+  </script>
+</body>
+</html>
