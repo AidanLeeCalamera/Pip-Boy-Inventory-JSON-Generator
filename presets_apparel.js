@@ -1,1 +1,3 @@
-const apparelPresets = [];
+const apparelPresets = [
+
+];

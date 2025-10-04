@@ -10,22 +10,20 @@
   <script src="presets_consumables.js"></script>
   <script src="presets_weapons.js"></script>
   <script src="presets_apparel.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: #3a3a3a;
       min-height: 100vh;
-      padding: 15px;
       color: #e0e0e0;
     }
     .container {
-      max-width: 1400px;
-      margin: 0 auto;
       background: #2b2b2b;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
-      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     .header {
       background: #1f1f1f;
@@ -50,11 +48,17 @@
       transition: background 0.3s;
     }
     .export-btn-header:hover { background: #777; }
+    .export-btn-header:disabled {
+        background: #444;
+        color: #888;
+        cursor: not-allowed;
+    }
     .main-content {
       display: grid;
-      grid-template-columns: 280px 1fr 340px;
+      grid-template-columns: 308px 1fr 306px;
       gap: 0;
-      height: calc(100vh - 120px);
+      flex-grow: 1;
+      overflow: hidden;
     }
     .sidebar {
       background: #353535;
@@ -62,8 +66,15 @@
       padding: 15px;
       overflow-y: auto;
       height: 100%;
+      display: flex;
+      flex-direction: column;
     }
-    .item-list { list-style: none; }
+    .item-list { 
+        list-style: none; 
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-bottom: 12px;
+    }
     .item-list li {
       background: #2b2b2b;
       margin-bottom: 6px;
@@ -116,6 +127,7 @@
       cursor: pointer;
       margin-bottom: 8px;
       transition: background 0.3s;
+      flex-shrink: 0;
     }
     .add-item-btn:hover { background: #666; }
     .preset-dropdown {
@@ -128,6 +140,7 @@
       font-size: 0.9em;
       cursor: pointer;
       margin-bottom: 12px;
+      flex-shrink: 0;
     }
     .preset-dropdown:hover { border-color: #777; }
     .editor {
@@ -165,9 +178,18 @@
     .add-stat-btn:hover { background: #666; }
     .checkbox-group { display: flex; align-items: center; margin-top: 10px; }
     .checkbox-group input[type="checkbox"] { width: auto; margin-right: 8px; }
-    .sound-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-    .sound-tag { background: #555; color: white; padding: 4px 10px; border-radius: 15px; font-size: 0.8em; display: flex; align-items: center; gap: 5px; }
-    .sound-tag button { background: rgba(255,255,255,0.3); border: none; color: white; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-weight: bold; font-size: 0.8em; }
+    .sound-list, .equip-slot-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .sound-tag, .equip-slot-tag {
+      background: #555;
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .sound-tag button, .equip-slot-tag button { background: rgba(255,255,255,0.3); border: none; color: white; border-radius: 50%; width: 18px; height: 18px; cursor: pointer; font-weight: bold; font-size: 0.8em; }
     .empty-state { text-align: center; padding: 60px 20px; color: #888; }
     .empty-state h2 { margin-bottom: 15px; }
     .section-header { font-size: 1.1em; color: #e0e0e0; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 2px solid #555; }
@@ -181,22 +203,48 @@
     .reorder-arrows button { background: #555; color: white; border: none; border-radius: 4px; width: 20px; height: 15px; line-height: 15px; cursor: pointer; font-size: 10px; }
     .reorder-arrows button:hover { background: #666; }
     .reorder-arrows button:disabled { background: #444; color: #888; cursor: not-allowed; }
+    hr { border: 1px solid #555; margin: 12px 0; flex-shrink: 0; width: 100%;}
+    .base-item-controls { display: flex; gap: 8px; flex-shrink: 0; }
+    .add-base-btn {
+      flex: 1;
+      padding: 8px;
+      font-size: 0.85em;
+      background: #555;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .add-base-btn:hover { background: #666; }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <h1>Items.json Generator</h1>
-      <button class="export-btn-header" onclick="exportJSON()">Export items.json</button>
+      <button id="exportBtnHeader" class="export-btn-header" onclick="exportJSON()" disabled>Export Files</button>
     </div>
 
     <div class="main-content">
       <div class="sidebar">
+        <button class="add-item-btn" onclick="document.getElementById('fileInput').click()">Load Items...</button>
+        <input type="file" id="fileInput" multiple accept=".json" style="display: none;" onchange="loadItemsFromFiles(event)">
+        
         <button class="add-item-btn" onclick="document.getElementById('folderInput').click()">Select DATA Folder</button>
         <input type="file" id="folderInput" webkitdirectory directory style="display: none;" onchange="loadDataFolder(event)">
-        <button class="add-item-btn" onclick="addNewItem()">+ Add New Item</button>
+        
         <select class="preset-dropdown" id="presetDropdown" onchange="addPresetItem(this.value); this.value='';"></select>
+        
         <ul class="item-list" id="itemList"></ul>
+        
+        <hr>
+        <div class="base-item-controls">
+            <button class="add-base-btn" onclick="addBaseItem('weapon')">+ Base Weapon</button>
+            <button class="add-base-btn" onclick="addBaseItem('apparel')">+ Base Apparel</button>
+            <button class="add-base-btn" onclick="addBaseItem('consumable')">+ Base Consumable</button>
+        </div>
       </div>
 
       <div class="editor" id="editor"><div class="empty-state"><h2>No item selected</h2><p>Select an item from the list or create a new one</p></div></div>
@@ -217,13 +265,14 @@
 
     const damageTypes = ["attack", "energy", "fire", "frost", "bleed", "rad"];
     const defenseTypes = ["defense", "energy", "fire", "frost", "rad"];
+    const apparelEquipSlots = ["hat", "eyewear", "mask", "clothing", "chest", "leftArm", "rightArm", "leftLeg", "rightLeg", "accessory"];
     
+    // ... (All other functions from previous version remain here) ...
     function initializePresets() {
         const allPresets = [];
         if (typeof consumablePresets !== 'undefined') allPresets.push(...consumablePresets);
         if (typeof weaponPresets !== 'undefined') allPresets.push(...weaponPresets);
         if (typeof apparelPresets !== 'undefined') allPresets.push(...apparelPresets);
-
         const combined = {};
         allPresets.forEach(item => {
             const key = item.name.toLowerCase().replace(/\s+/g, '');
@@ -239,6 +288,48 @@
             optionsHtml += `<option value="${key}">${presetItems[key].name}</option>`;
         }
         dropdown.innerHTML = optionsHtml;
+    }
+    
+    function readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = () => reject(reader.error);
+            reader.readAsText(file);
+        });
+    }
+
+    async function loadItemsFromFiles(event) {
+        const files = event.target.files;
+        if (!files.length) return;
+
+        let loadedItems = [];
+        for (const file of files) {
+            try {
+                const fileContent = await readFileAsText(file);
+                const parsedJson = JSON.parse(fileContent);
+                if (Array.isArray(parsedJson)) {
+                    loadedItems.push(...parsedJson);
+                } else {
+                    alert(`Warning: File ${file.name} is not a valid item array and was skipped.`);
+                }
+            } catch (error) {
+                console.error(`Error reading or parsing file ${file.name}:`, error);
+                alert(`Could not load file: ${file.name}. It may not be a valid JSON file.`);
+            }
+        }
+        items = loadedItems;
+        currentIndex = -1; // Reset selection
+        renderItemList();
+        if (items.length > 0) {
+            selectItem(0); // Select the first new item
+        } else {
+            // Clear UI if no items were loaded
+            document.getElementById('editor').innerHTML = `<div class="empty-state"><h2>No item selected</h2><p>Select an item from the list or create a new one</p></div>`;
+            renderPipboyPreview();
+        }
+        // Clear the file input value to allow loading the same file again
+        event.target.value = '';
     }
 
     function loadDataFolder(event) {
@@ -263,11 +354,8 @@
         li.className = index === currentIndex ? 'active' : '';
         const isFirst = index === 0;
         const isLast = index === items.length - 1;
-
         li.innerHTML = `
-            <div class="item-name-wrapper">
-                <span class="item-name">${item.name}</span>
-            </div>
+            <div class="item-name-wrapper"> <span class="item-name">${item.name}</span> </div>
             ${item.type ? `<span class="item-type">${item.type}</span>` : ''}
             <div class="reorder-arrows">
                 <button onclick="moveItemUp(${index}, event)" ${isFirst ? 'disabled' : ''}>▲</button>
@@ -399,11 +487,33 @@
     }
     function updateDamage(index, field, value) { if(currentIndex<0)return; items[currentIndex].damages[index][field] = value; renderPipboyPreview(); }
     function updateDefense(index, field, value) { if(currentIndex<0)return; items[currentIndex].defenses[index][field] = value; renderPipboyPreview(); }
-
-    function addNewItem() {
-      const newItem = { name: "New Item", quantity: 1, effect: "", stats: {} };
-      items.push(newItem);
-      selectItem(items.length - 1);
+    
+    function addBaseItem(type) {
+        const CappedType = type.charAt(0).toUpperCase() + type.slice(1);
+        let baseItem = {
+            name: `New ${CappedType}`,
+            type: type,
+            quantity: 1,
+            effect: "",
+            stats: { Weight: "1.0", Value: "10" }
+        };
+        switch (type) {
+            case 'weapon':
+                baseItem.damages = [{ type: "attack", value: "5" }];
+                baseItem.ammoType = "None";
+                baseItem.stats["Fire Rate"] = "10";
+                baseItem.stats.Range = "50";
+                break;
+            case 'apparel':
+                baseItem.defenses = [{ type: "defense", value: "5" }];
+                baseItem.equipSlots = [];
+                break;
+            case 'consumable':
+                baseItem.stats.Health = "10";
+                break;
+        }
+        items.push(baseItem);
+        selectItem(items.length - 1);
     }
 
     function addPresetItem(presetKey) {
@@ -442,6 +552,20 @@
       if (items[currentIndex].sounds.length === 0) delete items[currentIndex].sounds;
       renderSounds();
     }
+    function addApparelEquipSlot(slot) {
+        if (!slot || currentIndex < 0) return;
+        if (!items[currentIndex].equipSlots) items[currentIndex].equipSlots = [];
+        if (!items[currentIndex].equipSlots.includes(slot)) {
+            items[currentIndex].equipSlots.push(slot);
+            renderApparelEquipSlots();
+        }
+    }
+    function removeApparelEquipSlot(index) {
+        if (currentIndex < 0) return;
+        items[currentIndex].equipSlots.splice(index, 1);
+        if (items[currentIndex].equipSlots.length === 0) delete items[currentIndex].equipSlots;
+        renderApparelEquipSlots();
+    }
     
     function renderEditor() {
       if (currentIndex < 0) {
@@ -457,20 +581,25 @@
         </div>
         <div class="form-row">
           <div class="form-group"> <label>Quantity</label> <input type="number" value="${item.quantity}" oninput="updateItem('quantity', parseInt(this.value) || 0)"> </div>
-          <div class="form-group"> <label>Sounds (optional)</label> <select onchange="addSound(this.value); this.value='';"> <option value="">Select a sound file...</option> ${availableSounds.map(s => `<option value="${s}">${s}</option>`).join('')} </select> <div class="sound-list" id="soundList"></div> </div>
+          <div class="form-group"> <label>Sounds</label> <select onchange="addSound(this.value); this.value='';"> <option value="">Select a sound file...</option> ${availableSounds.map(s => `<option value="${s}">${s}</option>`).join('')} </select> <div class="sound-list" id="soundList"></div> </div>
         </div>
-        <div class="form-group"> <label>Image File (optional, not recommended)</label> <select onchange="updateItem('image', this.value)"> <option value="">None</option> ${availableImages.map(img => `<option value="${img}" ${item.image === img ? 'selected' : ''}>${img}</option>`).join('')} </select> </div>
+        <div class="form-group"> <label>Image File</label> <select onchange="updateItem('image', this.value)"> <option value="">None</option> ${availableImages.map(img => `<option value="${img}" ${item.image === img ? 'selected' : ''}>${img}</option>`).join('')} </select> </div>
       `;
 
       if (item.type === 'weapon') { html += `<div class="form-group"> <label>Ammo Type</label> <input type="text" value="${item.ammoType || ''}" oninput="updateItem('ammoType', this.value || null)" placeholder="e.g., Fusion Cell"> </div> <div class="form-group"> <label>Damage Values</label> <div class="damages-container" id="damagesContainer"></div> <button class="add-stat-btn" onclick="addDamage()">+ Add Damage Type</button> </div>`; }
-      if (item.type === 'apparel') { html += `<div class="form-group"> <label>Defense Values</label> <div class="defenses-container" id="defensesContainer"></div> <button class="add-stat-btn" onclick="addDefense()">+ Add Defense Type</button> </div>`; }
+      if (item.type === 'apparel') { 
+          html += `
+            <div class="form-group"> <label>Equip Slots</label> <select onchange="addApparelEquipSlot(this.value); this.value='';"> <option value="">Add an equip slot...</option> ${apparelEquipSlots.map(st => `<option value="${st}">${st}</option>`).join('')} </select> <div class="equip-slot-list" id="equipSlotList"></div> </div>
+            <div class="form-group"> <label>Defense Values</label> <div class="defenses-container" id="defensesContainer"></div> <button class="add-stat-btn" onclick="addDefense()">+ Add Defense Type</button> </div>
+          `; 
+      }
       
       html += `
         <div class="form-group" style="margin-top: 15px;"> <label>Stats</label> <div class="stats-container" id="statsContainer"></div> <button class="add-stat-btn" onclick="addStat()">+ Add Stat</button> </div>
         <div class="form-group"> <label>Effect Description</label> <textarea oninput="updateItem('effect', this.value)">${item.effect || ''}</textarea> </div>`;
 
       document.getElementById('editor').innerHTML = html;
-      renderDamages(); renderDefenses(); renderSounds(); renderStats();
+      renderDamages(); renderDefenses(); renderSounds(); renderApparelEquipSlots(); renderStats();
     }
     
     function renderDamages() {
@@ -496,6 +625,16 @@
     function renderSounds() {
       const container = document.getElementById('soundList'); if (!container) return; container.innerHTML = ''; if (currentIndex < 0 || !items[currentIndex].sounds) return;
       items[currentIndex].sounds.forEach((sound, index) => { const tag = document.createElement('div'); tag.className = 'sound-tag'; tag.innerHTML = `${sound} <button onclick="removeSound(${index})">×</button>`; container.appendChild(tag); });
+    }
+
+    function renderApparelEquipSlots() {
+      const container = document.getElementById('equipSlotList'); if (!container) return; container.innerHTML = ''; if (currentIndex < 0 || !items[currentIndex].equipSlots) return;
+      items[currentIndex].equipSlots.forEach((slot, index) => { 
+        const tag = document.createElement('div'); 
+        tag.className = 'equip-slot-tag'; 
+        tag.innerHTML = `${slot} <button onclick="removeApparelEquipSlot(${index})">×</button>`; 
+        container.appendChild(tag); 
+      });
     }
 
     function renderStats() {
@@ -533,17 +672,37 @@
     }
     
     function exportJSON() {
-      const json = JSON.stringify(items, null, 2); const blob = new Blob([json],{type:'application/json'}); const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'items.json'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+        const zip = new JSZip();
+        const CHUNK_SIZE = 9;
+        const pageCounts = [];
+        for (let i = 0; i < items.length; i += CHUNK_SIZE) {
+            const pageIndex = i / CHUNK_SIZE;
+            const chunk = items.slice(i, i + CHUNK_SIZE);
+            pageCounts.push(chunk.length);
+            zip.file(`items_${pageIndex}.json`, JSON.stringify(chunk, null, 2));
+        }
+        const meta = { totalItems: items.length, pageCounts: pageCounts };
+        zip.file('items_meta.json', JSON.stringify(meta, null, 2));
+        zip.generateAsync({ type: 'blob' }).then(content => {
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'items_export.zip';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
     }
     
-    // Initial setup calls run after the DOM is loaded
-    document.addEventListener('DOMContentLoaded', () => {
+    // Initial setup calls
+    window.onload = () => {
         initializePresets();
         renderPresetDropdown();
         renderItemList();
         renderPipboyPreview();
-    });
+        document.getElementById('exportBtnHeader').disabled = false;
+    };
   </script>
 </body>
 </html>
