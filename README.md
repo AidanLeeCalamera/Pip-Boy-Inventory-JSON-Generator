@@ -1,5 +1,5 @@
 # Pip-Boy-Inventory-JSON-Generator
-A HTML page for generating items.json files for my inventory patch for the Pip-Boy 3000 MK V.
+A HTML page for generating items.json files for the [Pip-Boy inventory patch](https://github.com/AidanLeeCalamera/Pip-Boy-Inventory-Patch) for the Pip-Boy 3000 MK V.
 
 ## Usage
 1. Download zip and extract to a folder.  
@@ -9,7 +9,7 @@ A HTML page for generating items.json files for my inventory patch for the Pip-B
    in the directory with the audio you want to add, and putting the output files in the DATA folder.  
 5. Select "Add Preset Item" to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
 6. All stats are fully customizable, so you can name an item anything you want, name any stat whatever you want, have any value you want. There are 6 damage types, 10 apparel slots, and 5 defense types.  
-7. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any items_(number).json and items_meta.json previously there first) on your Pip-Boy 3000 MK V for use with the [Pip-Boy inventory patch](https://github.com/AidanLeeCalamera/Pip-Boy-Inventory-Patch) with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).  
+7. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any items_(number).json and items_meta.json previously there first) on your Pip-Boy 3000 MK V with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).  
 8. Stock up on Stimpaks and Radaway for the wasteland!
 
 \
