@@ -7,7 +7,7 @@ A HTML page for generating items.json files for my inventory patch for the Pip-B
    Optional: If you want to use any of the audio and/or image<sup>**1**</sup> files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do custom images will come soon, as for custom audio, it's as simple as running
    `mkdir output && for %F in (*.mp3) do ffmpeg -i "%F" -ac 1 -ar 16000 -af "volume=5dB" -sample_fmt s16 -c:a pcm_s16le -f wav "output\%~nF.wav"`  
    in the directory with the audio you want to add, and putting the output files in the DATA folder.  
-5. Select presets to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
+5. Select "Add Preset Item" to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
 6. All stats are fully customizable, so you can name an item anything you want, name any stat whatever you want, have any value you want. There are 6 damage types, 10 apparel slots, and 5 defense types.  
 7. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any previously there first) on your Pip-Boy 3000 MK V for use with the [Pip-Boy inventory patch](https://github.com/AidanLeeCalamera/Pip-Boy-Inventory-Patch) with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).  
 8. Stock up on Stimpaks and Radaway for the wasteland!
