@@ -4,7 +4,7 @@ A HTML page for generating items.json files for my inventory patch for the Pip-B
 ## Usage
 1. Download zip and extract to a folder.  
 2. Run items-json-generator.html  
-   Optional: If you want to use any of the audio and/or image<sup>**1**</sup> files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do images will come soon, as for audio, it's as simple as running
+   Optional: If you want to use any of the audio and/or images<sup>**1**</sup> files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do images will come soon, as for audio, it's as simple as running
    `mkdir output && for %F in (*.mp3) do ffmpeg -i "%F" -ac 1 -ar 16000 -af "volume=5dB" -sample_fmt s16 -c:a pcm_s16le -f wav "output\%~nF.wav"`  
    in the directory with the audio you want to add, and putting the output files in the DATA folder.  
 5. Select presets to add predefined items or add custom items with "Add New Item".  
