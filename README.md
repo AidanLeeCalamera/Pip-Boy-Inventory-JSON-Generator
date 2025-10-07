@@ -19,8 +19,8 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
 <br/>
 
 # Any PRs with custom items, whether from the games or just fun items you've made, are encouraged and welcome!
-1. Fork this repo. Then you have a repo that you can modify with your custom presets.
-2. Simply create your custom item in the app, export the json files, and copy the item in the curly brackets into the corresponding preset js file. (If you have any custom sounds or images, you should PR those too into community_DATA)<br/>
+1. Fork this repo by clicking the fork button at the top of the repo page. You now have a repo that you can modify with your custom presets.
+3. Simply create your custom item in the app, export the json files, and copy the item in the curly brackets into the corresponding preset js file. (If you have any custom sounds or images, you should PR those too into community_DATA)<br/>
 
 For example, if you wanted to make a Nuka-Cola item, you would set all the stats names and values in the app, any sound(s) you want, any images<sup>**1**</sup>, etc. And export the files, in this case it would look like:
 ```
@@ -43,4 +43,5 @@ For example, if you wanted to make a Nuka-Cola item, you would set all the stats
 ]
 ```
 Then copy from the { before "name", to the second } after your last stat, and paste into the corresponding preset category, in this case presets_consumables.js.<BR/>
-3. Open a new PR with your modified fork.
+3. Open your fork, click add file and upload new file, then drag your modified preset json into the window and commit changes.
+4. Now, come back to this repo, click pull requests, and new pull request. Then, select your fork, and open the pull request.
