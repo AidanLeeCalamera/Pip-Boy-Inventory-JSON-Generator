@@ -42,4 +42,4 @@ For example, if you wanted to make a Nuka-Cola item, you would set all the stats
   }
 ]
 ```
-Then copy from the { before "name", to the second } after your last stat. Paste into the corresponding preset category, in this case consumables, and open a new PR with your modified presets_*.json.
+Then copy from the { before "name", to the second } after your last stat. Paste into the corresponding preset category, in this case consumables, and open a new PR with your modified fork.
