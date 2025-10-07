@@ -42,5 +42,5 @@ For example, if you wanted to make a Nuka-Cola item, you would set all the stats
   }
 ]
 ```
-Then copy from the { before "name", to the second } after your last stat, and paste into the corresponding preset category, in this case presets_consumables.js.
+Then copy from the { before "name", to the second } after your last stat, and paste into the corresponding preset category, in this case presets_consumables.js.<BR/>
 3. Open a new PR with your modified fork.
