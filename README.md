@@ -19,7 +19,8 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
 <br/>
 
 # Any PRs with custom items, whether from the games or just fun items you've made, are encouraged and welcome!
-Simply create your custom item in the app, export the json files, and copy the item in the curly brackets into the corresponding preset js file. (If you have any custom sounds or images, you should PR those too into community_DATA)<br/>
+First, for this repo. Then you have a repo that you can modify with your custom presets.
+Next simply create your custom item in the app, export the json files, and copy the item in the curly brackets into the corresponding preset js file. (If you have any custom sounds or images, you should PR those too into community_DATA)<br/>
 
 For example, if you wanted to make a Nuka-Cola item, you would set all the stats names and values in the app, any sound(s) you want, any images<sup>**1**</sup>, etc. And export the files, in this case it would look like:
 ```
