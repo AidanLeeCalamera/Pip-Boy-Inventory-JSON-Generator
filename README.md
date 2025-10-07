@@ -9,8 +9,9 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
    in the directory with the audio you want to add, and putting the output files in the DATA folder.  
 5. Select "Add Preset Item" to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
 6. All stats are fully customizable, so you can name an item anything you want, name any stat whatever you want, have any value you want. There are 6 damage types, 10 apparel slots, and 5 defense types.  
-7. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any items_(number).json and items_meta.json previously there first) on your Pip-Boy 3000 MK V with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).  
-8. Stock up on Stimpaks and Radaway for the wasteland!
+7. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any items_(number).json and items_meta.json previously there first) on your Pip-Boy 3000 MK V with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).
+   NOTE: You can also load existing items_(number).json files by clicking Load Items JSONs, letting you edit your existing items lists.
+9. Stock up on Stimpaks and Radaway for the wasteland!
 
 \
 <sup>**1**</sup>Images are not currently recommended for the average user (and most likely never will be) as they can be covered by stats and are quite processer intensive.<br/>
