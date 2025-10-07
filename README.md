@@ -43,5 +43,5 @@ For example, if you wanted to make a Nuka-Cola item, you would set all the stats
 ]
 ```
 Then copy from the { before "name", to the second } after your last stat, and paste into the corresponding preset category, in this case presets_consumables.js.<BR/>
-3. Open your fork, click add file and upload new file, then drag your modified preset json into the window and commit changes.
+3. Open your fork, click add file and upload new file, then drag your modified preset json into the window and commit changes.<BR/>
 4. Now, come back to this repo, click pull requests, and new pull request. Then, select your fork, and open the pull request.
