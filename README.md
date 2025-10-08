@@ -2,7 +2,7 @@
 A HTML page for generating items.json files for the [Pip-Boy inventory patch](https://github.com/AidanLeeCalamera/Pip-Boy-Inventory-Patch) for the Pip-Boy 3000 MK V.
 
 ## Usage
-1. Download zip and extract to a folder.  
+1. Download zip and extract to a folder. (Note: You may get a virus warning, I don't know what causes this, just ignore it.)  
 2. Run items-json-generator.html  
    Optional: If you want to use any of the audio and/or image<sup>**1**</sup> files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do custom images will come soon, as for custom audio, it's as simple as running
    `mkdir output && for %F in (*.mp3) do ffmpeg -i "%F" -ac 1 -ar 16000 -af "volume=5dB" -sample_fmt s16 -c:a pcm_s16le -f wav "output\%~nF.wav"`  
