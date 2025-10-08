@@ -679,11 +679,11 @@
             const pageIndex = i / CHUNK_SIZE;
             const chunk = items.slice(i, i + CHUNK_SIZE);
             pageCounts.push(chunk.length);
-            zip.file(`items_${pageIndex}.json`, JSON.stringify(chunk, null, 2));
+            zip.file(`items_${pageIndex}.json`, JSON.stringify(chunk, null, 2), {date: new Date(), compression: "DEFLATE"});
         }
         const meta = { totalItems: items.length, pageCounts: pageCounts };
-        zip.file('items_meta.json', JSON.stringify(meta, null, 2));
-        zip.generateAsync({ type: 'blob' }).then(content => {
+        zip.file('items_meta.json', JSON.stringify(meta, null, 2), {date: new Date(), compression: "DEFLATE"});
+        zip.generateAsync({ type: 'blob', compression: "DEFLATE", compressionOptions: { level: 6 } }).then(content => {
             const url = URL.createObjectURL(content);
             const a = document.createElement('a');
             a.href = url;
