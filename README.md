@@ -1,7 +1,19 @@
 # Pip-Boy-Inventory-JSON-Generator
 A HTML page for generating items.json files for the [Pip-Boy inventory patch](https://github.com/AidanLeeCalamera/Pip-Boy-Inventory-Patch) for the Pip-Boy 3000 MK V.
 
-## Usage
+## Remote Usage (Recommended for most users)
+1. Go to the [HTML tool website](https://aidanslab.github.io/Pip-Boy-Inventory-JSON-Generator/index.html).<BR/>
+   **OPTIONAL:** If you want to use any of the audio and/or image<sup>**1**</sup> files provided, download the DATA folder [provided in releases](https://github.com/AidansLab/Pip-Boy-Inventory-JSON-Generator/releases/tag/DATA) and extract the folder, click "Select DATA Folder" on the website, and select the downloaded DATA folder. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do custom images will come soon, as for custom audio, it's as simple as running
+   `mkdir output && for %F in (*.mp3) do ffmpeg -i "%F" -ac 1 -ar 16000 -af "volume=5dB" -sample_fmt s16 -c:a pcm_s16le -f wav "output\%~nF.wav"`  
+   in the directory with the audio you want to add, and putting the output files in the DATA folder.
+2. Select "Add Preset Item" to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
+3. All stats are fully customizable, so you can name an item anything you want, name any stat whatever you want, have any value you want. There are 6 damage types, 10 apparel slots, and 5 defense types.  
+4. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any items_(number).json and items_meta.json previously there first) on your Pip-Boy 3000 MK V with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).  
+   **NOTE:** You can also load existing items_(number).json files by clicking Load Items JSONs, letting you edit your existing items lists.
+5. Stock up on Stimpaks and Radaway for the wasteland!
+
+
+## Local Usage
 1. Download zip and extract to a folder. (Note: You may get a virus warning, I don't know what causes this, just ignore it.)  
 2. Run items-json-generator.html  
    Optional: If you want to use any of the audio and/or image<sup>**1**</sup> files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do custom images will come soon, as for custom audio, it's as simple as running
