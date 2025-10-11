@@ -3,7 +3,7 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
 
 ## Remote Usage (Recommended for most users)
 1. Go to the [HTML tool website](https://aidanslab.github.io/Pip-Boy-Inventory-JSON-Generator/index.html).<BR/>
-   **OPTIONAL:** If you want to use any of the audio and/or image<sup>**1**</sup> files provided, download the DATA folder [provided in releases](https://github.com/AidansLab/Pip-Boy-Inventory-JSON-Generator/releases/tag/DATA) and extract the folder, click "Select DATA Folder" on the website, and select the downloaded DATA folder. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do custom images will come soon, as for custom audio, it's as simple as running
+   **OPTIONAL:** If you want to use any of the audio and/or image<sup>**1**</sup> files provided, download the DATA folder [provided in releases](https://github.com/AidansLab/Pip-Boy-Inventory-JSON-Generator/releases/tag/DATA) and extract the folder, click "Select DATA Folder" on the website, and select the downloaded DATA folder. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Image tutorial [here](image-tutorial), as for custom audio, it's as simple as running
    `mkdir output && for %F in (*.mp3) do ffmpeg -i "%F" -ac 1 -ar 16000 -af "volume=5dB" -sample_fmt s16 -c:a pcm_s16le -f wav "output\%~nF.wav"`  
    in the directory with the audio you want to add, and putting the output files in the DATA folder.
 2. Select "Add Preset Item" to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
@@ -16,7 +16,7 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
 ## Local Usage
 1. Download zip and extract to a folder. (Note: You may get a virus warning, I don't know what causes this, just ignore it.)  
 2. Run items-json-generator.html  
-   Optional: If you want to use any of the audio and/or image<sup>**1**</sup> files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Tutorial for how to do custom images will come soon, as for custom audio, it's as simple as running
+   **Optional:** If you want to use any of the audio and/or image<sup>**1**</sup> files provided, click "Select DATA Folder" and select the DATA folder included. If you want to add any custom audio and/or image<sup>**1**</sup> files just put them in that folder. (Image tutorial [here](image-tutorial), as for custom audio, it's as simple as running
    `mkdir output && for %F in (*.mp3) do ffmpeg -i "%F" -ac 1 -ar 16000 -af "volume=5dB" -sample_fmt s16 -c:a pcm_s16le -f wav "output\%~nF.wav"`  
    in the directory with the audio you want to add, and putting the output files in the DATA folder.  
 5. Select "Add Preset Item" to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
@@ -30,6 +30,15 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
 <sup>**2**</sup>If you have not uploaded the DATA folder that came with the patch, do so now. If you intend to use any community items with sounds or images, these can be found in community_DATA and should also be placed into DATA.
 <br/>
 <br/>
+
+# Image Tutorial
+1. Images need to be prepared for use with the inventory. First, resize your image to 150 in the largest dimension. So if your image is 300 x 214, you would resize it to 150 x 107.
+2. Upload your image [to this tool](https://www.espruino.com/Image%20Converter).</BR>
+   **OPTIONAL:** If the preview image has lost detail, you can adjust brightness and contrast to try and bring some back. Think of brightness as a rough detail add, and contrast as a fine detail add.
+3. Under Output As:, select Image Object.
+4. Copy the resulting output and paste into a js file with a name suffixed with _img, for example, Radaway_img.js.
+5. Place the file into the DATA folder used for the HTML tool to use with the tool.
+6. Continue from the **Optional** step below step one, under Remote Usage.
 
 # Any PRs with custom items, whether from the games or just fun items you've made, are encouraged and welcome!
 1. Fork this repo by clicking the fork button at the top of the repo page. You now have a repo that you can modify with your custom presets.
