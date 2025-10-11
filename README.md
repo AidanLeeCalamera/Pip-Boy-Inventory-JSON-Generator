@@ -8,7 +8,7 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
    in the directory with the audio you want to add, and putting the output files in the DATA folder.
 2. Select "Add Preset Item" to add predefined items or make custom items with the "+ Base Weapon", "+ Base Apparel", and "+ Base Consumable" buttons.
 3. All stats are fully customizable, so you can name an item anything you want, name any stat whatever you want, have any value you want. There are 6 damage types, 10 apparel slots, and 5 defense types.  
-4. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any items_(number).json and items_meta.json previously there first) on your Pip-Boy 3000 MK V with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).  
+4. Export the items by clicking "Export Files", this will give you a zip with items_(number).json and items_meta.json, extract these and uploaded to the DATA folder<sup>**2**</sup> (make sure to delete any items_(number).json and items_meta.json previously there first) on your Pip-Boy 3000 MK V with the wonderful [Pip-Boy mainatanance tool](https://pip-boy.com/3000-mk-v/maintenance).<BR/>
    **NOTE:** You can also load existing items_(number).json files by clicking Load Items JSONs, letting you edit your existing items lists.
 5. Stock up on Stimpaks and Radaway for the wasteland!
 
@@ -38,7 +38,8 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
 3. Under Output As:, select Image Object.
 4. Copy the resulting output and paste into a js file with a name suffixed with _img, for example, Radaway_img.js.
 5. Place the file into the DATA folder used for the HTML tool to use with the tool.
-6. Continue from the **Optional** step below step one, under Remote Usage.
+6. Continue from the **Optional** step below step one, under Remote Usage.<BR/>
+   **Note:** Remember to also upload your new image file to the DATA folder on your Pip-Boy.
 
 # Any PRs with custom items, whether from the games or just fun items you've made, are encouraged and welcome!
 1. Fork this repo by clicking the fork button at the top of the repo page. You now have a repo that you can modify with your custom presets.
