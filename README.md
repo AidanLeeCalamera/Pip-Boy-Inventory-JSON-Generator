@@ -51,7 +51,7 @@ For example, if you wanted to make a Nuka-Cola item, you would set all the stats
   {
     "name": "Stimpak",
     "type": "consumable",
-    "quantity": 10,
+    "quantity": 1,
     "effect": "Restores 30% of your health.",
     "sounds": [
       "Stimpak.wav"
@@ -65,7 +65,8 @@ For example, if you wanted to make a Nuka-Cola item, you would set all the stats
   }
 ]
 ```
-Then copy from the { before "name", to the second } after your last stat, and paste into the corresponding preset category, adding a comma to the } of item before it, in this case presets_consumables.js.<BR/>
+Then copy from the { before "name", to the second } after your last stat, and paste into the corresponding preset category, adding a comma to the } of item before it, in this case presets_consumables.js. Also, make sure to set your item quantity to 1.<BR/>
+**IMPORTANT:** DO NOT PR your items_meta.json or items_(number).json! I will have to manually move and fix it, which takes time away from updates for the main patch.<BR/>
 
 3. Open your fork, click add file and upload files, then drag your modified preset json(s) into the window, if you added any custom images and/or sounds drag your community_DATA folder in too, and commit changes.<BR/>
 4. Now, come back to this repo, click pull requests, then new pull request. Select your fork by clicking head repository and selecting the fork with your GitHub username, and create the pull request (adding some comments and a title about what you added will help me move through PRs faster, especially if you added a lot).
