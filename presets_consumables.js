@@ -52,7 +52,7 @@ const consumablePresets = [
     }
   },
   {
-    "name": "Nuka Cola",
+    "name": "Nuka-Cola",
     "type": "consumable",
     "quantity": 1,
     "effect": "Refreshing! Restores 20 HP and provides a small AP boost.",
@@ -67,6 +67,92 @@ const consumablePresets = [
       "Weight": "1.0",
       "Value": "20"
     }
+  },
+  {
+    "name": "Purified Water",
+    "type": "consumable",
+    "quantity": 1,
+    "effect": "",
+    "stats": {
+      "Health": "40",
+      "Weight": "1.0",
+      "Value": "20"
+    },
+    "sounds": [
+      "Soda_01.wav",
+      "Soda_02.wav",
+      "Soda_03.wav"
+    ],
+    "image": "PurifiedWater_img.js"
+  },
+  {
+    "name": "Mentats",
+    "type": "consumable",
+    "quantity": 1,
+    "effect": "",
+    "stats": {
+      "INT": {
+        "value": "+2",
+        "isTimed": true
+      },
+      "PER": {
+        "value": "+2",
+        "isTimed": true
+      },
+      "CHA": {
+        "value": "-1",
+        "isTimed": true
+      },
+      "Weight": "0.1",
+      "Value": "50"
+    },
+    "sounds": [
+      "RadX_01.wav",
+      "RadX_02.wav"
+    ],
+    "image": "Mentats_img.js"
+  },
+  {
+    "name": "Jet",
+    "type": "consumable",
+    "quantity": 1,
+    "effect": "",
+    "stats": {
+      "MAX AP": "+30",
+      "Weight": "0.5",
+      "Value": "20"
+    },
+    "sounds": [
+      "Jet_01.wav",
+      "Jet_02.wav"
+    ],
+    "image": "Jet_img.js"
+  },
+  {
+    "name": "Sugar Bombs",
+    "type": "consumable",
+    "quantity": 1,
+    "effect": "",
+    "stats": {
+      "Health": "15",
+      "Rads": "7",
+      "Weight": "0.5",
+      "Value": "11"
+    },
+    "sounds": [
+      "Eating.wav"
+    ],
+    "image": "SugarBombs_img.js"
+  },
+  {
+    "name": "Bottlecaps",
+    "type": "consumable",
+    "quantity": 1,
+    "effect": "",
+    "stats": {
+      "Weight": "0",
+      "Value": "62"
+    },
+    "image": "Bottlecap_img.js"
   }
-
 ];
