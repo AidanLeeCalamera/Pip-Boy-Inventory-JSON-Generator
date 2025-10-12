@@ -44,6 +44,26 @@ const weaponPresets = [
     }
   },
   {
+    "name": "Laser Pistol (GRA)",
+    "type": "weapon",
+    "quantity": 1,
+    "effect": "",
+    "stats": {
+      "Fire Rate": "50",
+      "Range": "104",
+      "Weight": "6.7",
+      "Value": "427"
+    },
+    "damages": [
+      {
+        "type": "energy",
+        "value": "44"
+      }
+    ],
+    "ammoType": "Fusion Cell",
+    "image": "LaserPistol_img.js"
+  },
+  {
     "name": "Plasma Rifle",
     "type": "weapon",
     "quantity": 1,

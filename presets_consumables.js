@@ -41,7 +41,7 @@ const consumablePresets = [
       "RadX_01.wav",
       "RadX_02.wav"
     ],
-    "image": "RadX_img.js",
+    "image": "Rad-X_img.js",
     "stats": {
       "Rad Resist": {
         "value": "75",
@@ -52,7 +52,7 @@ const consumablePresets = [
     }
   },
   {
-    "name": "Nuka-Cola",
+    "name": "Nuka Cola",
     "type": "consumable",
     "quantity": 1,
     "effect": "Refreshing! Restores 20 HP and provides a small AP boost.",
