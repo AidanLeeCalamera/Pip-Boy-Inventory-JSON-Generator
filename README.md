@@ -42,7 +42,7 @@ A HTML page for generating items.json files for the [Pip-Boy inventory patch](ht
    **Note:** Remember to also upload your new image file to the DATA folder on your Pip-Boy.
 
 # Any PRs with custom items, whether from the games or just fun items you've made, are encouraged and welcome!
-# PR instructions for those who would prefer the GitHub website
+# PR instructions for those who want to avoid the Git CLI
 1. Fork this repo by clicking the fork button at the top of the repo page. You now have a repo that you can modify with your custom presets.
 2. Simply create your custom item in the app, export the json files, and copy the item in the curly brackets into the corresponding preset js file. (If you have any custom sounds or images, you should add those to community_DATA)<br/>
 
