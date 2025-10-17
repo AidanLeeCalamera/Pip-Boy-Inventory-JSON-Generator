@@ -11,11 +11,11 @@ const apparelPresets = [
     "defenses": [
       {
         "type": "energy",
-        "value": "+20"
+        "value": "20"
       },
       {
         "type": "rad",
-        "value": "+25"
+        "value": "25"
       }
     ],
     "equipSlots": [
@@ -35,11 +35,11 @@ const apparelPresets = [
     "defenses": [
       {
         "type": "defense",
-        "value": "+14"
+        "value": "14"
       },
       {
         "type": "energy",
-        "value": "+23"
+        "value": "23"
       }
     ],
     "equipSlots": [
@@ -59,11 +59,11 @@ const apparelPresets = [
     "defenses": [
       {
         "type": "defense",
-        "value": "+14"
+        "value": "14"
       },
       {
         "type": "energy",
-        "value": "+23"
+        "value": "23"
       }
     ],
     "equipSlots": [
@@ -71,4 +71,5 @@ const apparelPresets = [
     ],
     "image": "LeatherLeftArm_img.js"
   }
+
 ];
