@@ -92,11 +92,11 @@ const consumablePresets = [
     "effect": "",
     "stats": {
       "INT": {
-        "value": "+2",
+        "value": "2",
         "isTimed": true
       },
       "PER": {
-        "value": "+2",
+        "value": "2",
         "isTimed": true
       },
       "CHA": {
@@ -118,7 +118,7 @@ const consumablePresets = [
     "quantity": 1,
     "effect": "",
     "stats": {
-      "MAX AP": "+30",
+      "MAX AP": "30",
       "Weight": "0.5",
       "Value": "20"
     },
@@ -156,3 +156,4 @@ const consumablePresets = [
     "image": "Bottlecap_img.js"
   }
 ];
+
