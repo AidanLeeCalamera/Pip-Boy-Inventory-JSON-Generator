@@ -50,10 +50,28 @@
 			gap: 10px;
 		}
 
+		.header-title-section {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			flex: 0 0 auto;
+		}
+
 		.header h1 {
 			font-size: 1.5em;
 			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 			margin: 0;
+		}
+
+		.help-link {
+			font-size: 0.9em;
+			color: #999;
+			text-decoration: none;
+			transition: color 0.3s;
+		}
+
+		.help-link:hover {
+			color: #bbb;
 		}
 
 		.export-btn-header {
@@ -482,7 +500,10 @@
 <body>
 	<div class="container">
 		<div class="header">
-			<h1>Items.json Generator</h1>
+			<div class="header-title-section">
+				<h1>Items.json Generator</h1>
+				<a href="https://github.com/AidansLab/Pip-Boy-Inventory-JSON-Generator/blob/main/README.md#remote-usage-recommended-for-most-users" target="_blank" class="help-link" title="View documentation">(?)</a>
+			</div>
 			<div class="header-buttons">
 				<button id="btnConnectUSB" class="export-btn-header">Connect via USB</button>
 				<button id="btnUploadUSB" class="export-btn-header" onclick="sendJSONviaUSB()" disabled>Upload to Device</button>
