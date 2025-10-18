@@ -1,0 +1,3 @@
+[submodule "EspruinoWebTools"]
+	path = EspruinoWebTools
+	url = https://github.com/espruino/EspruinoWebTools
